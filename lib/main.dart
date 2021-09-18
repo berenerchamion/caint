@@ -24,7 +24,13 @@ class _MyApp extends State {
       future: _initialization,
       builder: (context, snapshot)  {
         if (snapshot.hasError) {
-          return ErrorScreen();
+          return MaterialApp(
+            title: 'Ag caint i nGleann Comhann',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: ErrorScreen(),
+          );
         }
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
@@ -35,7 +41,13 @@ class _MyApp extends State {
             home: ChatScreen(),
           );
         }
-        return LoadingScreen();
+        return MaterialApp(
+          title: 'Ag caint i nGleann Comhann',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: LoadingScreen(),
+        );
       },
     );
   }

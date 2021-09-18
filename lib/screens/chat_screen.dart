@@ -12,23 +12,35 @@ class ChatScreen extends StatelessWidget {
         bottomOpacity: 0.5,
         title: Text('Ag caint i nGleann Comhann'),
       ),
-      body: ListView.builder(
-        itemCount: 5,
-        itemBuilder: (ctx, index) => Container(
-          padding: EdgeInsets.all(8),
-          child: Text('This should work...'),
-        ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('caints/P3APHMSD2WH0DZoj0351/messages')
+            .snapshots(),
+        builder: (ctx, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if (streamSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (!streamSnapshot.hasData) {
+            return Center(
+              child: Text('You don\'t have any messages yet.'),
+            );
+          } else {
+            final documents = streamSnapshot.data!.docs;
+            return ListView.builder(
+              itemCount: documents.length,
+              itemBuilder: (ctx, index) => Container(
+                padding: EdgeInsets.all(8),
+                child: Text(documents[index]['text']),
+              ),
+            );
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('caints/P3APHMSD2WH0DZoj0351/messages')
-              .snapshots()
-              .listen((data) {
-            print(data);
-          });
-        },
+        onPressed: () {},
       ),
     );
   }
