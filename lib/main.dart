@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './screens/chat_screen.dart';
 import './screens/loading_screen.dart';
 import './screens/error_screen.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }

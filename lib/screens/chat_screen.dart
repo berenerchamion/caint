@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final messageCollectionId = dotenv.get('FIRESTORE_COLLECTION_ID');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -14,7 +16,7 @@ class ChatScreen extends StatelessWidget {
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
-            .collection('caints/P3APHMSD2WH0DZoj0351/messages')
+            .collection('caints/$messageCollectionId/messages')
             .snapshots(),
         builder: (ctx, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.connectionState == ConnectionState.waiting) {
@@ -40,7 +42,12 @@ class ChatScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          FirebaseFirestore.instance
+              .collection('caints/$messageCollectionId/messages').add({
+            'text': 'Hello there from your floating action button.'
+          });
+        },
       ),
     );
   }
