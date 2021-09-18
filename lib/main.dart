@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import './screens/chat_screen.dart';
 import './screens/loading_screen.dart';
@@ -19,17 +19,30 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  ThemeData configureTheme(BuildContext ctx) {
+    ThemeData ourTheme = ThemeData(
+      primarySwatch: Colors.purple,
+      colorScheme: ColorScheme.fromSwatch(
+        backgroundColor: Colors.purple,
+        primarySwatch: Colors.purple,
+        accentColor: Colors.orange,
+        brightness: Brightness.dark,
+      ),
+      buttonTheme: ButtonTheme.of(ctx).copyWith(
+        buttonColor: Colors.deepPurple,
+      ),
+    );
+    return ourTheme;
+  }
 
-  final ThemeData ourTheme = ThemeData(
-    primarySwatch: Colors.purple,
-  );
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData ourTheme = configureTheme(context);
     return FutureBuilder(
       future: _initialization,
-      builder: (context, snapshot)  {
+      builder: (context, snapshot) {
         if (snapshot.hasError) {
           return MaterialApp(
             title: 'Ag caint i nGleann Comhann',
