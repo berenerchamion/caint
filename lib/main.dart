@@ -22,14 +22,20 @@ class _MyApp extends State {
   ThemeData configureTheme(BuildContext ctx) {
     ThemeData ourTheme = ThemeData(
       primarySwatch: Colors.purple,
+      highlightColor: Colors.white,
       colorScheme: ColorScheme.fromSwatch(
         backgroundColor: Colors.purple,
         primarySwatch: Colors.purple,
         accentColor: Colors.orange,
         brightness: Brightness.dark,
       ),
-      buttonTheme: ButtonTheme.of(ctx).copyWith(
-        buttonColor: Colors.deepPurple,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          primary: Colors.orange,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
     );
     return ourTheme;
