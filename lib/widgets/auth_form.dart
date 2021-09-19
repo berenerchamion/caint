@@ -9,6 +9,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _isLogin = true;
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
@@ -17,9 +18,12 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = _formKey.currentState!.validate();
 
     FocusScope.of(context).unfocus();
-    
+
     if (isValid) {
       _formKey.currentState!.save();
+      print(_userName);
+      print(_userEmail);
+      print(_userPassword);
     }
   }
 
@@ -37,6 +41,7 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextFormField(
+                    key: ValueKey('userEmail'),
                     validator: (value) {
                       if (value == null || value.isEmpty || !value.contains('@')) {
                         return 'Please enter a valid email address.';
@@ -51,7 +56,9 @@ class _AuthFormState extends State<AuthForm> {
                       _userEmail = value!;
                     },
                   ),
+                  if (!_isLogin) //Special conditional
                   TextFormField(
+                    key: ValueKey('userName'),
                     validator: (value) {
                       if (value == null || value.length < 8) {
                         return 'Come on enter a reasonable username.';
@@ -59,13 +66,14 @@ class _AuthFormState extends State<AuthForm> {
                       return null;
                     },
                     decoration: InputDecoration(
-                      labelText: 'Username',
+                      labelText: 'User Name',
                     ),
                     onSaved: (value) {
                       _userName = value!;
                     },
                   ),
                   TextFormField(
+                    key: ValueKey('userPassword'),
                     validator: (value) {
                       String pattern =
                           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
@@ -90,12 +98,16 @@ class _AuthFormState extends State<AuthForm> {
                     height: 12,
                   ),
                   ElevatedButton(
-                    child: Text('Login'),
-                    onPressed: () {},
+                    child: Text(_isLogin ? 'Login' : 'Sign Up'),
+                    onPressed: _trySubmit,
                   ),
                   TextButton(
-                    child: Text('Create New Account'),
-                    onPressed: () {},
+                    child: Text(_isLogin ? 'Create New Account' : 'I already have an account'),
+                    onPressed: () {
+                      setState(() {
+                        _isLogin = !_isLogin;
+                      });
+                    },
                     style: TextButton.styleFrom(
                       primary: Colors.white,
                       textStyle: TextStyle(
