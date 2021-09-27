@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  const AuthForm({Key? key}) : super(key: key);
+  const AuthForm(this.submitFunction, {Key? key}) : super(key: key);
+
+  final void Function(
+    String email,
+    String username,
+    String password,
+    bool isLogin,
+  ) submitFunction;
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -9,10 +16,10 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _isLogin = true;
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
+  bool _isLogin = true;
 
   void _trySubmit() {
     final isValid = _formKey.currentState!.validate();
@@ -21,9 +28,12 @@ class _AuthFormState extends State<AuthForm> {
 
     if (isValid) {
       _formKey.currentState!.save();
-      print(_userName);
-      print(_userEmail);
-      print(_userPassword);
+      widget.submitFunction(
+        _userEmail,
+        _userName,
+        _userPassword,
+        _isLogin,
+      );
     }
   }
 
@@ -43,7 +53,9 @@ class _AuthFormState extends State<AuthForm> {
                   TextFormField(
                     key: ValueKey('userEmail'),
                     validator: (value) {
-                      if (value == null || value.isEmpty || !value.contains('@')) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          !value.contains('@')) {
                         return 'Please enter a valid email address.';
                       }
                       return null;
@@ -52,26 +64,26 @@ class _AuthFormState extends State<AuthForm> {
                     decoration: InputDecoration(
                       labelText: 'Email Address',
                     ),
-                    onSaved: (value){
+                    onSaved: (value) {
                       _userEmail = value!;
                     },
                   ),
                   if (!_isLogin) //Special conditional
-                  TextFormField(
-                    key: ValueKey('userName'),
-                    validator: (value) {
-                      if (value == null || value.length < 8) {
-                        return 'Come on enter a reasonable username.';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'User Name',
+                    TextFormField(
+                      key: ValueKey('userName'),
+                      validator: (value) {
+                        if (value == null || value.length < 8) {
+                          return 'Come on enter a reasonable username.';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'User Name',
+                      ),
+                      onSaved: (value) {
+                        _userName = value!;
+                      },
                     ),
-                    onSaved: (value) {
-                      _userName = value!;
-                    },
-                  ),
                   TextFormField(
                     key: ValueKey('userPassword'),
                     validator: (value) {
@@ -102,7 +114,9 @@ class _AuthFormState extends State<AuthForm> {
                     onPressed: _trySubmit,
                   ),
                   TextButton(
-                    child: Text(_isLogin ? 'Create New Account' : 'I already have an account'),
+                    child: Text(_isLogin
+                        ? 'Create New Account'
+                        : 'I already have an account'),
                     onPressed: () {
                       setState(() {
                         _isLogin = !_isLogin;
@@ -111,8 +125,8 @@ class _AuthFormState extends State<AuthForm> {
                     style: TextButton.styleFrom(
                       primary: Colors.white,
                       textStyle: TextStyle(
-                        //color: Colors.orange,
-                      ),
+                          //color: Colors.orange,
+                          ),
                     ),
                   ),
                 ],
