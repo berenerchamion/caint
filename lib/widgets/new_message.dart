@@ -8,6 +8,7 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
+  String _enteredMessage = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,14 +24,16 @@ class _NewMessageState extends State<NewMessage> {
                 labelText: 'Send a Message',
               ),
               onChanged: (value) {
-
+                setState(() {
+                  _enteredMessage = value;
+                });
               },
             ),
           ),
           IconButton(
             color: Theme.of(context).primaryColor,
             icon: Icon(Icons.send),
-            onPressed: () {},
+            onPressed: _enteredMessage.trim().isEmpty ? null : () {},
           ),
         ],
       ),

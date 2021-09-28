@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/messages.dart';
+import '../widgets/new_message.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -55,15 +56,8 @@ class ChatScreen extends StatelessWidget {
           Expanded(
             child: Messages(),
           ),
+          NewMessage(),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('caints/$messageCollectionId/messages')
-              .add({'text': 'Hello there from your floating action button.'});
-        },
       ),
     );
   }
