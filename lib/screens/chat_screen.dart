@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../widgets/messages.dart';
+
 class ChatScreen extends StatelessWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
@@ -41,38 +43,19 @@ class ChatScreen extends StatelessWidget {
               ), //DropdownMenuItem
             ],
             onChanged: (itemIdentifier) {
-              if (itemIdentifier == 'logout'){
+              if (itemIdentifier == 'logout') {
                 FirebaseAuth.instance.signOut();
               }
             },
           ), //DropdownButton
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('caints/$messageCollectionId/messages')
-            .snapshots(),
-        builder: (ctx, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          if (streamSnapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (!streamSnapshot.hasData) {
-            return Center(
-              child: Text('You don\'t have any messages yet.'),
-            );
-          } else {
-            final documents = streamSnapshot.data!.docs;
-            return ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (ctx, index) => Container(
-                padding: EdgeInsets.all(8),
-                child: Text(documents[index]['text']),
-              ),
-            );
-          }
-        },
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Messages(),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
