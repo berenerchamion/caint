@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import './screens/chat_screen.dart';
 import './screens/loading_screen.dart';
@@ -60,7 +61,17 @@ class _MyApp extends State {
           return MaterialApp(
             title: 'Ag caint i nGleann Comhann',
             theme: ourTheme,
-            home: AuthScreen(),
+            home: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (ctx, userSnapshot)  {
+                if (userSnapshot.hasData) {
+                  return ChatScreen();
+                }
+                else {
+                  return AuthScreen();
+                }
+              },
+            ),
           );
         }
         return MaterialApp(
