@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NewMessage extends StatefulWidget {
-  const NewMessage({Key? key}) : super(key: key);
+  NewMessage({Key? key}) : super(key: key);
 
   @override
   _NewMessageState createState() => _NewMessageState();
@@ -9,6 +11,18 @@ class NewMessage extends StatefulWidget {
 
 class _NewMessageState extends State<NewMessage> {
   String _enteredMessage = '';
+  final messageCollectionId = dotenv.get('FIRESTORE_COLLECTION_ID');
+  final _controller = TextEditingController();
+
+  _sendMessage() async {
+    FocusScope.of(context).unfocus();
+    await FirebaseFirestore.instance.collection('caints/$messageCollectionId/messages').add({
+      'text': _enteredMessage.trim(),
+      'createdAt': Timestamp.now(),
+    });
+    _controller.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,6 +34,7 @@ class _NewMessageState extends State<NewMessage> {
         children: [
           Expanded(
             child: TextField(
+              controller: _controller,
               decoration: InputDecoration(
                 labelText: 'Send a Message',
               ),
@@ -31,9 +46,9 @@ class _NewMessageState extends State<NewMessage> {
             ),
           ),
           IconButton(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.secondary,
             icon: Icon(Icons.send),
-            onPressed: _enteredMessage.trim().isEmpty ? null : () {},
+            onPressed: _enteredMessage.trim().isEmpty ? null : _sendMessage,
           ),
         ],
       ),

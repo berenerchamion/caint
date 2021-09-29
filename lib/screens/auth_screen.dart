@@ -50,9 +50,9 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
     } on PlatformException catch (err) {
-      var message = 'Yeah, you suck those creds no good.';
+      var message = 'Yeah, you suck those creds no good. ';
       if (err.message != null) {
-        message = err.message!;
+        message = message + err.message!;
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

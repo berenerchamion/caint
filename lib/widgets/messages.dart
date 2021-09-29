@@ -9,7 +9,7 @@ class Messages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('caints/$messageCollectionId/messages').snapshots(),
+      stream: FirebaseFirestore.instance.collection('caints/$messageCollectionId/messages').orderBy('createdAt').snapshots(),
       builder: (ctx, AsyncSnapshot<QuerySnapshot> caintsSnapshot) {
         if (caintsSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -18,6 +18,7 @@ class Messages extends StatelessWidget {
         }
         final caints = caintsSnapshot.data!.docs;
         return ListView.builder(
+          reverse: true,
           itemCount: caints.length,
           itemBuilder: (ctx, index) => Text(caints[index]['text']),
         );

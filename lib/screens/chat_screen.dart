@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../widgets/messages.dart';
@@ -11,7 +9,6 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final messageCollectionId = dotenv.get('FIRESTORE_COLLECTION_ID');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
