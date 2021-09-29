@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../widgets/message_bubble.dart';
+
 class Messages extends StatelessWidget {
   Messages({Key? key}) : super(key: key);
   final messageCollectionId = dotenv.get('FIRESTORE_COLLECTION_ID');
@@ -26,7 +28,7 @@ class Messages extends StatelessWidget {
         return ListView.builder(
           reverse: true,
           itemCount: caints.length,
-          itemBuilder: (ctx, index) => Text(caints[index]['text']),
+          itemBuilder: (ctx, index) => MessageBubble(caints[index]['text']),
         );
       },
     );
