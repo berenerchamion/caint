@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../widgets/message_bubble.dart';
@@ -10,6 +11,8 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final User? user = FirebaseAuth.instance.currentUser;
+
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('caints/$messageCollectionId/messages')
@@ -28,7 +31,7 @@ class Messages extends StatelessWidget {
         return ListView.builder(
           reverse: true,
           itemCount: caints.length,
-          itemBuilder: (ctx, index) => MessageBubble(caints[index]['text']),
+          itemBuilder: (ctx, index) => MessageBubble(caints[index]['text'], user?.uid == FirebaseAuth.instance.currentUser?.uid),
         );
       },
     );

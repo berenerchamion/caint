@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   final String message;
+  final bool isMe;
 
-  MessageBubble(this.message, {Key? key}) : super(key: key);
+  MessageBubble(this.message, this.isMe, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class MessageBubble extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.secondary,
+            color: isMe? Colors.grey[500] : Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.circular(12),
           ),
           width: 200,

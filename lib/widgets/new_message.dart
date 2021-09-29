@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NewMessage extends StatefulWidget {
@@ -16,11 +17,15 @@ class _NewMessageState extends State<NewMessage> {
 
   _sendMessage() async {
     FocusScope.of(context).unfocus();
-    await FirebaseFirestore.instance.collection('caints/$messageCollectionId/messages').add({
-      'text': _enteredMessage.trim(),
-      'createdAt': Timestamp.now(),
-    });
-    _controller.clear();
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseFirestore.instance.collection('caints/$messageCollectionId/messages').add({
+        'text': _enteredMessage.trim(),
+        'createdAt': Timestamp.now(),
+        'userId': user.uid,
+      });
+      _controller.clear();
+    }
   }
 
   @override
