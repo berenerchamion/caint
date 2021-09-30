@@ -31,7 +31,12 @@ class Messages extends StatelessWidget {
         return ListView.builder(
           reverse: true,
           itemCount: caints.length,
-          itemBuilder: (ctx, index) => MessageBubble(caints[index]['text'], user?.uid == FirebaseAuth.instance.currentUser?.uid),
+          itemBuilder: (ctx, index) => MessageBubble(
+            caints[index]['text'],
+            caints[index]['userId'] == FirebaseAuth.instance.currentUser?.uid,
+            caints[index]['userId'],
+            key: ValueKey(caints[index].id),
+          ),
         );
       },
     );

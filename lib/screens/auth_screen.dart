@@ -38,6 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+        print(authResult.user!.uid);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
