@@ -26,6 +26,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>I like pictures so please allow this</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Let me use the camera please</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

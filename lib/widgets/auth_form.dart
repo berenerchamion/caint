@@ -1,4 +1,6 @@
+import 'package:caint/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFunction, this.isLoading, {Key? key})
@@ -56,6 +58,8 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  if (!_isLogin)
+                  UserImagePicker(),
                   TextFormField(
                     key: ValueKey('userEmail'),
                     validator: (value) {
@@ -117,27 +121,27 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   if (widget.isLoading) CircularProgressIndicator(),
                   if (!widget.isLoading)
-                  ElevatedButton(
-                    child: Text(_isLogin ? 'Login' : 'Sign Up'),
-                    onPressed: _trySubmit,
-                  ),
-                  if(!widget.isLoading)
-                  TextButton(
-                    child: Text(_isLogin
-                        ? 'Create New Account'
-                        : 'I already have an account'),
-                    onPressed: () {
-                      setState(() {
-                        _isLogin = !_isLogin;
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
-                      textStyle: TextStyle(
-                          //color: Colors.orange,
-                          ),
+                    ElevatedButton(
+                      child: Text(_isLogin ? 'Login' : 'Sign Up'),
+                      onPressed: _trySubmit,
                     ),
-                  ),
+                  if (!widget.isLoading)
+                    TextButton(
+                      child: Text(_isLogin
+                          ? 'Create New Account'
+                          : 'I already have an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isLogin = !_isLogin;
+                        });
+                      },
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        textStyle: TextStyle(
+                            //color: Colors.orange,
+                            ),
+                      ),
+                    ),
                 ],
               ),
             ),
