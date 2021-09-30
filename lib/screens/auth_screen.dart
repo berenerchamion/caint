@@ -38,7 +38,6 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        print(authResult.user!.uid);
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
@@ -65,11 +64,13 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = false;
       });
     } catch (err) {
-      var message = 'Something catastrophic happened. ';
+      var message = 'Something catastrophic happened in the auth screen. ';
       print('$message $err');
-      setState(() {
-        _isLoading = false;
-      });
+      if  (this.mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
