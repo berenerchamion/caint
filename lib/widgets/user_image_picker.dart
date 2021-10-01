@@ -10,7 +10,7 @@ class UserImagePicker extends StatefulWidget {
 }
 
 class _UserImagePickerState extends State<UserImagePicker> {
-  File _pickedImage = File('assets/images/default-avatar.png');
+  File? _pickedImage;
   final _imagePicker = ImagePicker();
 
   void _pickImage() async {
@@ -27,14 +27,15 @@ class _UserImagePickerState extends State<UserImagePicker> {
     return Column(
       children: [
         CircleAvatar(
-          backgroundImage: FileImage(File('assets/images/default-avatar.png')),
+          backgroundColor: Colors.black26,
+          backgroundImage: _pickedImage == null ? null : FileImage(_pickedImage!),
           radius: 40,
         ),
           IconButton(
             icon: const Icon(Icons.upload_file_rounded),
             tooltip: 'Upload a photo...',
             color: Theme.of(context).colorScheme.secondary,
-            onPressed: () {},
+            onPressed: _pickImage,
           ),
       ],
     );
