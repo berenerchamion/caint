@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../widgets/auth_form.dart';
 
@@ -14,12 +16,13 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
-  var _isLoading  = false;
+  var _isLoading = false;
 
   void _submitAuthForm(
     String email,
     String userName,
     String password,
+    File? image,
     bool isLogin,
     BuildContext ctx,
   ) async {
@@ -38,15 +41,33 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child(authResult.user!.uid + '.jpg');
+        try {
+          await ref.putFile(image!);
+        }
+        on FirebaseException catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('The image upload has failed.'),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+          return;
+        }
+
+        final url = await ref.getDownloadURL();
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
             .set({
           'username': userName,
           'email': email,
-        });
-        setState(() {
-          _isLoading = false;
+          'image_url': url,
         });
       }
     } on PlatformException catch (err) {
@@ -60,17 +81,9 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Theme.of(ctx).errorColor,
         ),
       );
-      setState(() {
-        _isLoading = false;
-      });
     } catch (err) {
       var message = 'Something catastrophic happened in the auth screen. ';
       print('$message $err');
-      if  (this.mounted){
-        setState(() {
-          _isLoading = false;
-        });
-      }
     }
   }
 

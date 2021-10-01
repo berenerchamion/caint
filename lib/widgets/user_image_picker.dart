@@ -16,14 +16,17 @@ class _UserImagePickerState extends State<UserImagePicker> {
   final _imagePicker = ImagePicker();
 
   void _pickImage() async {
-   final pickedImageFile = await _imagePicker.pickImage(source: ImageSource.gallery);
-   if (pickedImageFile != null) {
-     setState(() {
-       _pickedImage = File(pickedImageFile.path);
-     });
-       widget.imagePickFn(_pickedImage!);
-   }
-
+    final pickedImageFile = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 150,
+    );
+    if (pickedImageFile != null) {
+      setState(() {
+        _pickedImage = File(pickedImageFile.path);
+      });
+      widget.imagePickFn(_pickedImage!);
+    }
   }
 
   @override
@@ -32,17 +35,17 @@ class _UserImagePickerState extends State<UserImagePicker> {
       children: [
         CircleAvatar(
           backgroundColor: Colors.black26,
-          backgroundImage: _pickedImage == null ? null : FileImage(_pickedImage!),
+          backgroundImage:
+              _pickedImage == null ? null : FileImage(_pickedImage!),
           radius: 40,
         ),
-          IconButton(
-            icon: const Icon(Icons.upload_file_rounded),
-            tooltip: 'Upload a photo...',
-            color: Theme.of(context).colorScheme.secondary,
-            onPressed: _pickImage,
-          ),
+        IconButton(
+          icon: const Icon(Icons.upload_file_rounded),
+          tooltip: 'Upload a photo...',
+          color: Theme.of(context).colorScheme.secondary,
+          onPressed: _pickImage,
+        ),
       ],
     );
   }
 }
-
