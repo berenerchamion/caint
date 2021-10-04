@@ -23,7 +23,6 @@ class _ChatScreenState extends State<ChatScreen> {
    });
    final fbm = FirebaseMessaging.instance;
    NotificationSettings settings = await fbm.requestPermission();
-
    setState(() {
      _requested = true;
      _fetching = false;
@@ -32,8 +31,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   @override
+  void initState() {
+    getMessagingPerms();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-   getMessagingPerms();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
