@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../widgets/messages.dart';
 import '../widgets/new_message.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  bool _requested = false;
+  bool _fetching = false;
+  late NotificationSettings _settings;
+
+ Future<void> getMessagingPerms () async {
+   setState(() {
+     _fetching = true;
+   });
+   final fbm = FirebaseMessaging.instance;
+   NotificationSettings settings = await fbm.requestPermission();
+
+   setState(() {
+     _requested = true;
+     _fetching = false;
+     _settings = settings;
+   });
+  }
+
+  @override
   Widget build(BuildContext context) {
+   getMessagingPerms();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

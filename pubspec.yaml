@@ -38,6 +38,7 @@ dev_dependencies:
   firebase_auth: ^3.1.1
   image_picker: ^0.8.4+2
   firebase_storage: ^10.0.4
+  firebase_messaging: ^10.0.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
