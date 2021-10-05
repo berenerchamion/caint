@@ -28,7 +28,7 @@ class _ChatScreenState extends State<ChatScreen> {
       _fetching = false;
       _settings = settings;
     });
-
+  }
     @override
     void initState() {
       getMessagingPerms();
@@ -93,5 +93,4 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     }
   }
-}
 
