@@ -17,23 +17,24 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _fetching = false;
   late NotificationSettings _settings;
 
- Future<void> getMessagingPerms () async {
-   setState(() {
-     _fetching = true;
-   });
-   final fbm = FirebaseMessaging.instance;
-   NotificationSettings settings = await fbm.requestPermission();
-
-   setState(() {
-     _requested = true;
-     _fetching = false;
-     _settings = settings;
-   });
+  Future<void> getMessagingPerms () async {
+    setState(() {
+      _fetching = true;
+    });
+    final fbm = FirebaseMessaging.instance;
+    NotificationSettings settings = await fbm.requestPermission();
+    setState(() {
+      _requested = true;
+      _fetching = false;
+      _settings = settings;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-   getMessagingPerms();
+    if (!_requested) {
+      getMessagingPerms();
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
