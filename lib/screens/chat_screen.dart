@@ -17,7 +17,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _fetching = false;
   late NotificationSettings _settings;
 
-  Future<void> getMessagingPerms () async {
+  Future<void> getMessagingPerms() async {
     setState(() {
       _fetching = true;
     });
@@ -28,60 +28,70 @@ class _ChatScreenState extends State<ChatScreen> {
       _fetching = false;
       _settings = settings;
     });
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    if (!_requested) {
+    @override
+    void initState() {
       getMessagingPerms();
+      super.initState();
     }
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Ag caint i nGleann Comhann'),
-        actions: [
-          DropdownButton(
-            underline: Container(
-              height: 0,
-              color: Theme.of(context).appBarTheme.backgroundColor,
-            ),
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            items: [
-              DropdownMenuItem(
-                value: 'logout',
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.exit_to_app,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text('Logout'),
-                    ],
+
+    @override
+    Widget build(BuildContext context) {
+      if (!_requested) {
+        getMessagingPerms();
+      }
+      return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Ag caint i nGleann Comhann'),
+          actions: [
+            DropdownButton(
+              underline: Container(
+                height: 0,
+                color: Theme
+                    .of(context)
+                    .appBarTheme
+                    .backgroundColor,
+              ),
+              icon: Icon(
+                Icons.more_vert,
+              ),
+              items: [
+                DropdownMenuItem(
+                  value: 'logout',
+                  child: Container(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.exit_to_app,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text('Logout'),
+                      ],
+                    ),
                   ),
-                ),
-              ), //DropdownMenuItem
-            ],
-            onChanged: (itemIdentifier) {
-              if (itemIdentifier == 'logout') {
-                FirebaseAuth.instance.signOut();
-              }
-            },
-          ), //DropdownButton
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Messages(),
-          ),
-          NewMessage(),
-        ],
-      ),
-    );
+                ), //DropdownMenuItem
+              ],
+              onChanged: (itemIdentifier) {
+                if (itemIdentifier == 'logout') {
+                  FirebaseAuth.instance.signOut();
+                }
+              },
+            ), //DropdownButton
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: Messages(),
+            ),
+            NewMessage(),
+          ],
+        ),
+      );
+    }
   }
 }
+
