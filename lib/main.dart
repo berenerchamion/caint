@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
 
 import './screens/chat_screen.dart';
 import './screens/loading_screen.dart';
@@ -17,12 +18,22 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 late AndroidNotificationChannel channel;
-late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
+
+FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+String? selectedNotificationPayload;
+
+final BehaviorSubject<String?> selectNotificationSubject =
+    BehaviorSubject<String?>();
 
 void main() async {
   await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
       'high_importance_channel',
@@ -31,11 +42,26 @@ void main() async {
       importance: Importance.high,
     );
 
-    _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    final InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    await _flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: $payload');
+      }
+      selectedNotificationPayload = payload;
+      selectNotificationSubject.add(payload);
+    });
 
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
+            AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     await FirebaseMessaging.instance
@@ -66,6 +92,7 @@ class _MyApp extends State {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message when opened!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
@@ -79,7 +106,7 @@ class _MyApp extends State {
               channel.id,
               channel.name,
               channelDescription: channel.description,
-              icon: 'launch_background',
+              //icon: 'mipmap/ic_launcher',
             ),
           ),
         );
@@ -111,11 +138,10 @@ class _MyApp extends State {
             theme: ourTheme,
             home: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (ctx, userSnapshot)  {
+              builder: (ctx, userSnapshot) {
                 if (userSnapshot.hasData) {
                   return ChatScreen();
-                }
-                else {
+                } else {
                   return AuthScreen();
                 }
               },
