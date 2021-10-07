@@ -92,7 +92,6 @@ class _MyApp extends State {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message when opened!');
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
 
@@ -106,7 +105,6 @@ class _MyApp extends State {
               channel.id,
               channel.name,
               channelDescription: channel.description,
-              //icon: 'mipmap/ic_launcher',
             ),
           ),
         );

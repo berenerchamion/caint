@@ -49,10 +49,10 @@ class _AuthScreenState extends State<AuthScreen> {
         try {
           await ref.putFile(image!);
         }
-        on FirebaseException catch (e) {
+        on FirebaseException catch (e){
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('The image upload has failed.'),
+              content: Text('The image upload has failed: ${e.message}'),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
@@ -71,19 +71,29 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       }
     } on PlatformException catch (err) {
-      var message = 'Yeah, you suck those creds no good. ';
+      var message = 'Those credentials are incorrect. ';
       if (err.message != null) {
         message = message + err.message!;
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Oops: ${err.message}'),
+          content: Text('Platform Exception: ${err.message}'),
           backgroundColor: Theme.of(ctx).errorColor,
         ),
       );
+      //Adding this for convenience. In debug mode teh PlatformException will not get caught.
+      //So by adding this below I can see the exceptions during testing in Debug mode.
     } catch (err) {
       var message = 'Something catastrophic happened in the auth screen. ';
-      print('$message $err');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Platform Exception: ${err.toString()}'),
+          backgroundColor: Theme.of(ctx).errorColor,
+        ),
+      );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

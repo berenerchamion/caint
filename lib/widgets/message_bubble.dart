@@ -32,11 +32,11 @@ class MessageBubble extends StatelessWidget {
                 ),
               ),
               width: 180,
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 10,
                 horizontal: 20,
               ),
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 vertical: 15,
                 horizontal: 8,
               ),

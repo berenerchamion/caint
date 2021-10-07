@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:caint/widgets/user_image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(this.submitFunction, this.isLoading, {Key? key})
@@ -31,7 +30,6 @@ class _AuthFormState extends State<AuthForm> {
   File? _userImage;
   bool _isLogin = true;
 
-
   void _pickedImage(File image) {
     _userImage = image;
   }
@@ -44,7 +42,7 @@ class _AuthFormState extends State<AuthForm> {
     if (_userImage == null && !_isLogin) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('You have to pick an avatar image.'),
+          content: const Text('You have to pick an avatar image.'),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -79,7 +77,7 @@ class _AuthFormState extends State<AuthForm> {
                 children: <Widget>[
                   if (!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
-                    key: ValueKey('userEmail'),
+                    key: const ValueKey('userEmail'),
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
@@ -92,7 +90,7 @@ class _AuthFormState extends State<AuthForm> {
                     autocorrect: false,
                     textCapitalization: TextCapitalization.none,
                     enableSuggestions: false,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Email Address',
                     ),
                     onSaved: (value) {
@@ -101,7 +99,7 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                   if (!_isLogin) //Special conditional
                     TextFormField(
-                      key: ValueKey('userName'),
+                      key: const ValueKey('userName'),
                       autocorrect: true,
                       textCapitalization: TextCapitalization.words,
                       enableSuggestions: false,
@@ -111,7 +109,7 @@ class _AuthFormState extends State<AuthForm> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'User Name',
                       ),
                       onSaved: (value) {
@@ -119,9 +117,9 @@ class _AuthFormState extends State<AuthForm> {
                       },
                     ),
                   TextFormField(
-                    key: ValueKey('userPassword'),
+                    key: const ValueKey('userPassword'),
                     validator: (value) {
-                      String pattern =
+                      const String pattern =
                           r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
                       RegExp regex = new RegExp(pattern);
                       if (value == null || value.length < 8) {
@@ -161,9 +159,6 @@ class _AuthFormState extends State<AuthForm> {
                       },
                       style: TextButton.styleFrom(
                         primary: Colors.white,
-                        textStyle: TextStyle(
-                            //color: Colors.orange,
-                            ),
                       ),
                     ),
                 ],

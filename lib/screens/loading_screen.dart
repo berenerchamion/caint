@@ -10,7 +10,7 @@ class LoadingScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         bottomOpacity: 0.5,
-        title: Text('Ag caint i nGleann Comhann'),
+        title: const Text('Ag caint i nGleann Comhann'),
       ),
       body: Center(
         child: CircularProgressIndicator(),

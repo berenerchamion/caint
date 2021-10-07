@@ -14,18 +14,13 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   bool _requested = false;
-  bool _fetching = false;
   late NotificationSettings _settings;
 
   Future<void> getMessagingPerms() async {
-    setState(() {
-      _fetching = true;
-    });
     final fbm = FirebaseMessaging.instance;
     NotificationSettings settings = await fbm.requestPermission();
     setState(() {
       _requested = true;
-      _fetching = false;
       _settings = settings;
     });
   }
@@ -43,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text('Ag caint i nGleann Comhann'),
+          title: const Text('Ag caint i nGleann Comhann'),
           actions: [
             DropdownButton(
               underline: Container(

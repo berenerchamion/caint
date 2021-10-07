@@ -9,10 +9,10 @@ class ErrorScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         bottomOpacity: 0.5,
-        title: Text('Ag caint i nGleann Comhann'),
+        title: const Text('Ag caint i nGleann Comhann'),
       ),
       body: Center(
-        child: Text('A catastrophic error has happened.'),
+        child: const Text('A catastrophic error has happened.'),
       ),
     );
   }
