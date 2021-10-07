@@ -8,6 +8,7 @@ class LoadingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
         bottomOpacity: 0.5,
         title: Text('Ag caint i nGleann Comhann'),
       ),

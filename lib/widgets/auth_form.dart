@@ -89,6 +89,9 @@ class _AuthFormState extends State<AuthForm> {
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    textCapitalization: TextCapitalization.none,
+                    enableSuggestions: false,
                     decoration: InputDecoration(
                       labelText: 'Email Address',
                     ),
@@ -99,6 +102,9 @@ class _AuthFormState extends State<AuthForm> {
                   if (!_isLogin) //Special conditional
                     TextFormField(
                       key: ValueKey('userName'),
+                      autocorrect: true,
+                      textCapitalization: TextCapitalization.words,
+                      enableSuggestions: false,
                       validator: (value) {
                         if (value == null || value.length < 8) {
                           return 'Come on enter a reasonable username.';

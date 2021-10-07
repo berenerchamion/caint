@@ -31,8 +31,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
     @override
     void initState() {
-      getMessagingPerms();
       super.initState();
+      getMessagingPerms();
     }
 
     @override

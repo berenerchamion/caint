@@ -139,6 +139,9 @@ class _MyApp extends State {
             home: StreamBuilder(
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (ctx, userSnapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return LoadingScreen();
+                }
                 if (userSnapshot.hasData) {
                   return ChatScreen();
                 } else {
