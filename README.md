@@ -13,3 +13,6 @@ FIRESTORE_COLLECTION_ID=your key
 You will need to generate your google-services.json from the Firebase console and add it to the
 android/app folder.
 
+The app should work on iOS and Android. Because I do not have an iOS device I was not abel
+to test all the functions on iOS. In addition, I've spent quite a bit more time on the Android look and feel since this is the type of device I have.
+
