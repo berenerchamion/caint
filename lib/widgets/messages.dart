@@ -11,7 +11,6 @@ class Messages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('caints/$messageCollectionId/messages')
